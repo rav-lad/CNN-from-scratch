@@ -1,0 +1,54 @@
+# Python cache & build
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+.build/
+build/
+dist/
+*.egg-info/
+
+# Virtual envs
+.venv/
+venv/
+.env/
+.envrc
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Testing
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Logs & reports
+logs/
+reports/results.csv
+reports/figures/
+*.log
+
+# Data
+data/raw/
+data/processed/
+!data/.gitkeep
+
+# Checkpoints / model weights / artifacts
+checkpoints/
+artifacts/
+*.npz
+*.npy
+
+# Config secrets (if any)
+*.secrets.*
+*.env
+
+# Cache
+.cache/

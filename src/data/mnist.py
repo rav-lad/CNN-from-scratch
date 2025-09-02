@@ -1,0 +1,90 @@
+"""
+src/data/mnist.py
+Download and load MNIST as NCHW float32 in [0,1], with train/val/test splits.
+"""
+
+from __future__ import annotations
+import os
+import gzip
+import hashlib
+import urllib.request
+from typing import Tuple
+import numpy as np
+
+MNIST_URLS = {
+    "train_images": ("http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz", "f68b3c2dcbeaaa9fbdd348bbdeb94873"),
+    "train_labels": ("http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz", "d53e105ee54ea40749a09fcbcd1e9432"),
+    "test_images":  ("http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz", "9fb629c4189551a2d022fa330f9573f3"),
+    "test_labels":  ("http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz", "ec29112dd5afa0611ce80d1b7f02629c"),
+}
+
+def _download(url: str, path: str, md5: str | None = None) -> None:
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    if os.path.exists(path):
+        return
+    tmp = path + ".tmp"
+    urllib.request.urlretrieve(url, tmp)
+    if md5 is not None:
+        with open(tmp, "rb") as f:
+            data = f.read()
+        if hashlib.md5(data).hexdigest() != md5:
+            os.remove(tmp)
+            raise RuntimeError("MD5 mismatch for " + url)
+    os.rename(tmp, path)
+
+def _load_idx_images(path_gz: str) -> np.ndarray:
+    with gzip.open(path_gz, "rb") as f:
+        data = f.read()
+    magic = int.from_bytes(data[0:4], "big")
+    if magic != 2051:
+        raise RuntimeError("Invalid MNIST image file")
+    N = int.from_bytes(data[4:8], "big")
+    H = int.from_bytes(data[8:12], "big")
+    W = int.from_bytes(data[12:16], "big")
+    arr = np.frombuffer(data, dtype=np.uint8, offset=16).reshape(N, H, W)
+    # to NCHW float32 in [0,1]
+    arr = arr.astype(np.float32) / 255.0
+    arr = arr[:, None, :, :]
+    return arr
+
+def _load_idx_labels(path_gz: str) -> np.ndarray:
+    with gzip.open(path_gz, "rb") as f:
+        data = f.read()
+    magic = int.from_bytes(data[0:4], "big")
+    if magic != 2049:
+        raise RuntimeError("Invalid MNIST label file")
+    N = int.from_bytes(data[4:8], "big")
+    arr = np.frombuffer(data, dtype=np.uint8, offset=8).reshape(N,)
+    return arr.astype(np.int64)
+
+def load_mnist(data_dir: str = "data", val_ratio: float = 0.1, seed: int = 42) -> Tuple[
+    Tuple[np.ndarray, np.ndarray],
+    Tuple[np.ndarray, np.ndarray],
+    Tuple[np.ndarray, np.ndarray],
+    int,
+]:
+    root = os.path.join(data_dir, "mnist")
+    os.makedirs(root, exist_ok=True)
+    # download
+    for key, (url, md5) in MNIST_URLS.items():
+        _download(url, os.path.join(root, os.path.basename(url)), md5)
+
+    X_train = _load_idx_images(os.path.join(root, "train-images-idx3-ubyte.gz"))
+    y_train = _load_idx_labels(os.path.join(root, "train-labels-idx1-ubyte.gz"))
+    X_test = _load_idx_images(os.path.join(root, "t10k-images-idx3-ubyte.gz"))
+    y_test = _load_idx_labels(os.path.join(root, "t10k-labels-idx1-ubyte.gz"))
+
+    # train/val split
+    rng = np.random.default_rng(seed)
+    N = X_train.shape[0]
+    idx = np.arange(N)
+    rng.shuffle(idx)
+    n_val = int(N * val_ratio)
+    val_idx = idx[:n_val]
+    train_idx = idx[n_val:]
+
+    X_val, y_val = X_train[val_idx], y_train[val_idx]
+    X_train, y_train = X_train[train_idx], y_train[train_idx]
+
+    num_classes = 10
+    return (X_train, y_train), (X_val, y_val), (X_test, y_test), num_classes

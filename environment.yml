@@ -1,0 +1,9 @@
+name: cnn-from-scratch
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - numpy
+  - pytest
+  - pyyaml
+  - requests
