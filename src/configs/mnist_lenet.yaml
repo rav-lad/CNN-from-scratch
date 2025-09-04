@@ -1,0 +1,18 @@
+# configs/mnist_lenet.yaml
+dataset: mnist
+model: lenet_mnist
+seed: 42
+train:
+  epochs: 10
+  batch_size: 128
+  optimizer: adam
+  lr: 0.001
+  weight_decay: 0.0
+scheduler:
+  name: warmup_cosine
+  warmup_epochs: 2
+  T_max: 8
+  min_lr: 1e-5
+callbacks:
+  - early_stopping: {monitor: val_loss, patience: 3}
+  - checkpoint: {filepath: checkpoints/best_mnist.npz, monitor: val_acc}

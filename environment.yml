@@ -1,5 +1,6 @@
 name: cnn-from-scratch
 channels:
+  - pytorch
   - conda-forge
 dependencies:
   - python=3.10
@@ -7,3 +8,9 @@ dependencies:
   - pytest
   - pyyaml
   - requests
+  - jupyterlab
+  - ipykernel
+  - matplotlib
+  - pytorch
+  - torchvision
+  - cpuonly

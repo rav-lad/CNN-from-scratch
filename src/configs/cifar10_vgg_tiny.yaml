@@ -1,0 +1,18 @@
+# configs/cifar10_vggtiny.yaml
+dataset: cifar10
+model: vgg_tiny_cifar10
+seed: 42
+train:
+  epochs: 30
+  batch_size: 128
+  optimizer: adam
+  lr: 0.001
+  weight_decay: 0.0
+scheduler:
+  name: warmup_cosine
+  warmup_epochs: 3
+  T_max: 27
+  min_lr: 1e-5
+callbacks:
+  - early_stopping: {monitor: val_loss, patience: 5}
+  - checkpoint: {filepath: checkpoints/best_cifar10.npz, monitor: val_acc}

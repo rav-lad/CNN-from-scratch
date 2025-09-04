@@ -19,19 +19,11 @@ def test_batchnorm2d_backward_numeric():
         return np.sum(bn.forward(xx, training=True))
 
     dx_num = finite_diff_grad(f_input, x.copy(), eps=1e-6)
-
-    # Quand la norme vraie est ~0, la comparaison relative est ill- posée.
-    # On vérifie l'erreur absolue.
     err_abs = np.max(np.abs(dx - dx_num))
     assert err_abs < 1e-8
-
-    # Et on garde des checks solides pour dgamma/dbeta (non nuls en général)
-    # Recalcule forward pour rafraîchir le cache
     _ = bn.forward(x, training=True)
     dgamma = bn.grads()["gamma"].copy()
     dbeta = bn.grads()["beta"].copy()
-
-    # Numerical for gamma/beta
     gamma = bn.gamma.astype(np.float64)
     def f_gamma(gv):
         gb = bn.gamma.copy()
