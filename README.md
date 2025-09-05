@@ -131,13 +131,13 @@ callbacks:
 
 ## Milestones
 
-* [ ] `im2col` and `col2im` with tests
-* [ ] `Conv2D` forward and backward
-* [ ] `MaxPool2D` forward and backward
-* [ ] `Dense`, `ReLU`, `SoftmaxCE` with gradients
-* [ ] Train LeNet on MNIST to >98% val acc
-* [ ] BatchNorm2D + Dropout
-* [ ] Tiny VGG on CIFAR-10 to a reasonable baseline
+* [✅] `im2col` and `col2im` with tests
+* [✅] `Conv2D` forward and backward
+* [✅] `MaxPool2D` forward and backward
+* [✅] `Dense`, `ReLU`, `SoftmaxCE` with gradients
+* [✅] Train LeNet on MNIST to >98% val acc
+* [✅] BatchNorm2D + Dropout
+* [✅] Tiny VGG on CIFAR-10 to a reasonable baseline
 
 ## Limitations
 
