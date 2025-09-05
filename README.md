@@ -1,5 +1,3 @@
-
-````markdown
 # CNN from Scratch in NumPy (No Autograd)
 
 **Goal.** Build and train a small convolutional neural network **from scratch** in NumPy.  
@@ -27,7 +25,7 @@ python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -U pip
 pip install -e ".[dev]"
-````
+```
 
 ## Quick start
 
