@@ -1,0 +1,101 @@
+# DermaScan Model Configuration
+# Configuration for training skin condition classification model
+
+dataset: dermatology
+model: dermascan_cnn
+seed: 42
+
+# Data settings
+data:
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+  image_size: [224, 224]
+  num_classes: 7
+  classes:
+    - "Actinic Keratosis"      # AK
+    - "Basal Cell Carcinoma"   # BCC
+    - "Benign Keratosis"       # BKL
+    - "Dermatofibroma"         # DF
+    - "Melanoma"               # MEL
+    - "Melanocytic Nevus"      # NV
+    - "Vascular Lesion"        # VASC
+
+# Training settings
+train:
+  epochs: 50
+  batch_size: 32
+  lr: 0.001
+  optimizer: adam
+  beta1: 0.9
+  beta2: 0.999
+  weight_decay: 0.0001
+
+  # Learning rate scheduler
+  scheduler:
+    name: step
+    step_size: 10
+    gamma: 0.5
+
+  # Data augmentation
+  augmentation:
+    rotation_range: 20
+    horizontal_flip: true
+    vertical_flip: true
+    brightness_range: [0.8, 1.2]
+    zoom_range: [0.9, 1.1]
+
+# Model architecture
+model_config:
+  # Initial conv block
+  conv1_filters: 32
+  conv2_filters: 64
+  conv3_filters: 128
+  conv4_filters: 256
+
+  # Dense layers
+  dense1_units: 512
+  dropout_rate: 0.5
+
+  # Batch normalization
+  use_batchnorm: true
+
+  # Pooling
+  pool_size: 2
+
+# Callbacks
+callbacks:
+  - early_stopping:
+      monitor: val_acc
+      patience: 10
+      mode: max
+
+  - checkpoint:
+      filepath: "data/dermatology/models/dermascan_best.npz"
+      monitor: val_acc
+      mode: max
+      save_best_only: true
+
+  - csv_logger:
+      filename: "reports/dermascan_training.csv"
+
+# Evaluation
+evaluation:
+  metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1_score
+
+  # Class-specific metrics
+  per_class_metrics: true
+
+  # Confusion matrix
+  save_confusion_matrix: true
+  confusion_matrix_path: "reports/figures/dermascan_confusion_matrix.png"
+
+# Inference
+inference:
+  confidence_threshold: 0.5
+  top_k_predictions: 3
+  batch_size: 1

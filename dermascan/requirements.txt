@@ -1,0 +1,19 @@
+# DermaScan Requirements
+# Additional dependencies beyond the base CNN project
+
+# API Framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+
+# Image Processing
+Pillow>=10.0.0
+
+# Data handling (already in base requirements)
+# numpy>=1.24.0
+# pyyaml>=6.0
+
+# Optional: For enhanced features
+# scikit-learn>=1.3.0  # For metrics
+# matplotlib>=3.7.0    # For visualizations
+# requests>=2.31.0     # For API testing
