@@ -98,6 +98,74 @@ python app.py
 
 Ouvrez votre navigateur à: **http://localhost:8000**
 
+## 🐳 Déploiement Docker
+
+DermaScan peut être déployé facilement avec Docker pour un environnement isolé et reproductible.
+
+### Quick Start avec Docker
+
+```bash
+# Méthode 1: Docker Compose (Recommandé)
+docker-compose up -d
+
+# Méthode 2: Script automatique
+bash dermascan/scripts/docker_run.sh
+
+# Méthode 3: Docker build & run manuel
+docker build -t dermascan:latest .
+docker run -d -p 8000:8000 \
+  -v $(pwd)/data:/app/data \
+  -v $(pwd)/reports:/app/reports \
+  dermascan:latest
+```
+
+### Modes de Déploiement
+
+**Développement (avec hot-reload):**
+```bash
+docker-compose -f docker-compose.dev.yml up
+# Code changes → Auto-reload
+```
+
+**Production (avec Nginx):**
+```bash
+docker-compose --profile production up -d
+# API: http://localhost:8000
+# Web: http://localhost (nginx avec rate limiting)
+```
+
+### Scripts Docker Disponibles
+
+```bash
+# Build l'image
+bash dermascan/scripts/docker_build.sh
+
+# Run développement
+bash dermascan/scripts/docker_run.sh dev
+
+# Run production
+bash dermascan/scripts/docker_run.sh prod
+
+# Deploy complet (build + test + push)
+bash dermascan/scripts/docker_deploy.sh
+```
+
+### Configuration
+
+**Variables d'environnement (.env):**
+```bash
+PORT=8000
+LOG_LEVEL=info
+MODEL_PATH=/app/data/dermatology/models/dermascan_best.npz
+```
+
+**Volumes persistants:**
+- `./data:/app/data` - Datasets et modèles
+- `./reports:/app/reports` - Logs et métriques
+- `./checkpoints:/app/checkpoints` - Checkpoints d'entraînement
+
+**Documentation complète:** [DOCKER.md](../DOCKER.md)
+
 ## 📊 Données d'Entraînement
 
 ### Dataset Recommandé: HAM10000
