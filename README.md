@@ -1,7 +1,20 @@
 # CNN from Scratch in NumPy (No Autograd)
 
-**Goal.** Build and train a small convolutional neural network **from scratch** in NumPy.  
+**Goal.** Build and train a small convolutional neural network **from scratch** in NumPy.
 No autograd. Every forward and backward pass is implemented by hand, including convolution, pooling, batch normalization, and softmax cross entropy.
+
+## 🆕 DermaScan - AI Skin Condition Diagnosis
+
+**NEW!** This repository now includes **DermaScan**, a web application that uses the CNN infrastructure to detect skin conditions from images.
+
+👉 **[See DermaScan Documentation](dermascan/README.md)** | **[View Plan](DERMASCAN_PLAN.md)**
+
+Quick start:
+```bash
+pip install -r dermascan/requirements.txt
+bash dermascan/scripts/run_server.sh
+# Open http://localhost:8000
+```
 
 ## Why this project matters
 
@@ -53,16 +66,28 @@ python -m src.cli.export --config src/configs/mnist_lenet.yaml --weights checkpo
 cnn-from-scratch/
 ├─ pyproject.toml
 ├─ README.md
-├─ data/                # raw/ and processed/ datasets
-├─ notebooks/           # sanity checks, training report
+├─ DERMASCAN_PLAN.md        # 🆕 DermaScan project plan
+├─ data/                    # raw/ and processed/ datasets
+│  └─ dermatology/          # 🆕 HAM10000 dataset
+├─ dermascan/               # 🆕 Skin diagnosis application
+│  ├─ api/                  # FastAPI server
+│  ├─ inference/            # Model predictions
+│  ├─ preprocessing/        # Image processing
+│  ├─ database/             # Medical conditions info
+│  ├─ configs/              # Model configurations
+│  └─ scripts/              # Utilities
+├─ frontend/                # 🆕 Web interface
+│  ├─ static/               # CSS, JS
+│  └─ templates/            # HTML
+├─ notebooks/               # sanity checks, training report
 ├─ src/
-│  ├─ core/             # tensor utils, inits, losses, optim, metrics
-│  ├─ layers/           # conv, pool, dense, activations, bn, dropout
-│  ├─ models/           # sequential, small presets
-│  ├─ data/             # mnist, cifar10
-│  └─ train/            # loop, callbacks, scheduler, logger, cli
-├─ tests/               # unit and numeric gradient checks
-└─ reports/             # figures and CSV logs
+│  ├─ core/                 # tensor utils, inits, losses, optim, metrics
+│  ├─ layers/               # conv, pool, dense, activations, bn, dropout
+│  ├─ models/               # sequential, small presets
+│  ├─ data/                 # mnist, cifar10
+│  └─ train/                # loop, callbacks, scheduler, logger, cli
+├─ tests/                   # unit and numeric gradient checks
+└─ reports/                 # figures and CSV logs
 ```
 
 ## Math overview
@@ -129,6 +154,7 @@ callbacks:
 
 ## Milestones
 
+### Core CNN (Completed)
 * [✅] `im2col` and `col2im` with tests
 * [✅] `Conv2D` forward and backward
 * [✅] `MaxPool2D` forward and backward
@@ -136,6 +162,18 @@ callbacks:
 * [✅] Train LeNet on MNIST to >98% val acc
 * [✅] BatchNorm2D + Dropout
 * [✅] Tiny VGG on CIFAR-10 to a reasonable baseline
+
+### DermaScan (New Project)
+* [✅] Project structure and architecture
+* [✅] FastAPI backend with REST endpoints
+* [✅] Image preprocessing pipeline
+* [✅] CNN model architecture for dermatology
+* [✅] Medical conditions database (7 classes)
+* [✅] Web frontend (HTML/CSS/JS)
+* [✅] Complete documentation
+* [⏳] HAM10000 data loader
+* [⏳] Model training pipeline
+* [⏳] Production deployment
 
 ## Limitations
 

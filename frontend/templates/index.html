@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DermaScan - Diagnostic Dermatologique IA</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔬 DermaScan</h1>
+            <p class="subtitle">Analyse dermatologique assistée par Intelligence Artificielle</p>
+            <div class="warning-banner">
+                ⚠️ Cet outil ne remplace pas un diagnostic médical professionnel.
+                Consultez toujours un dermatologue pour un avis médical.
+            </div>
+        </header>
+
+        <main>
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <h2>Téléchargez une photo</h2>
+                        <p>Cliquez ou glissez une image de la zone concernée</p>
+                        <p class="file-types">PNG, JPG, JPEG (max. 10MB)</p>
+                        <input type="file" id="fileInput" accept="image/png,image/jpeg,image/jpg" hidden>
+                        <button class="btn-primary" id="selectFileBtn">Sélectionner une image</button>
+                    </div>
+                </div>
+
+                <!-- Image Preview -->
+                <div class="preview-section" id="previewSection" style="display: none;">
+                    <div class="preview-container">
+                        <img id="imagePreview" alt="Preview">
+                        <button class="btn-secondary" id="changeImageBtn">Changer l'image</button>
+                    </div>
+                    <button class="btn-primary btn-large" id="analyzeBtn">
+                        <span class="btn-text">Analyser l'image</span>
+                        <span class="btn-loader" style="display: none;">
+                            <span class="spinner"></span> Analyse en cours...
+                        </span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <h2>Résultats de l'analyse</h2>
+                <div id="resultsContainer"></div>
+            </section>
+
+            <!-- Info Section -->
+            <section class="info-section">
+                <h2>Comment ça marche ?</h2>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-number">1</div>
+                        <h3>Téléchargez</h3>
+                        <p>Prenez une photo claire de la zone concernée</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-number">2</div>
+                        <h3>Analyse IA</h3>
+                        <p>Notre modèle CNN analyse l'image</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-number">3</div>
+                        <h3>Résultats</h3>
+                        <p>Recevez des informations sur les conditions possibles</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-number">4</div>
+                        <h3>Consultez</h3>
+                        <p>Prenez rendez-vous avec un dermatologue</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Supported Conditions -->
+            <section class="conditions-section">
+                <h2>Conditions détectables</h2>
+                <div class="conditions-grid" id="conditionsList">
+                    <!-- Will be populated dynamically -->
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 DermaScan - Projet éducatif basé sur CNN from Scratch</p>
+            <p>Construit avec NumPy, FastAPI et ❤️</p>
+        </footer>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

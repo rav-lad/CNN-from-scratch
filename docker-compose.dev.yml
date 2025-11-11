@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  # Development version with hot-reload
+  dermascan-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dermascan-dev
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount entire source for hot-reload
+      - ./src:/app/src
+      - ./dermascan:/app/dermascan
+      - ./frontend:/app/frontend
+      - ./data:/app/data
+      - ./reports:/app/reports
+      - ./checkpoints:/app/checkpoints
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PORT=8000
+      - LOG_LEVEL=debug
+      - RELOAD=true
+    command: uvicorn dermascan.api.app:app --host 0.0.0.0 --port 8000 --reload
+    restart: unless-stopped
+    networks:
+      - dermascan-dev-network
+
+networks:
+  dermascan-dev-network:
+    driver: bridge
